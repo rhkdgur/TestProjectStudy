@@ -1,9 +1,12 @@
 package com.library.client
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.library.ApiException
+import com.library.ErrorStatusType
 import com.library.NaverErrorResponse
 import feign.Request
 import feign.Response
+import org.springframework.http.HttpStatus
 import spock.lang.Specification
 
 /**
@@ -22,7 +25,7 @@ class NaverErrorDecoderTest extends Specification {
     ObjectMapper objectMapper = Mock()
     NaverErrorDecoder naverErrorDecoder = new NaverErrorDecoder(objectMapper)
 
-    def "error decoder에서 에러 발생시 RuntimeException 예외가 발생한다."() {
+    def "error decoder에서 에러 발생시 ApiException 예외가 발생한다."() {
         given : "400 에러를 발생조건으로 선언한다."
         //ErrorDecoder 호출을 위한 responseBody를 세팅해준다.
         def responseBody = Mock(Response.Body)
@@ -43,9 +46,11 @@ class NaverErrorDecoderTest extends Specification {
         //decode 실행시 안에 들어가는 response 값과 objectMapper 값들은 위에 선언된 값들로 이루어진다.
         naverErrorDecoder.decode(_ as String, response)
 
-        then : "RuntimeException이 발생한다."
-        RuntimeException e = thrown()
-        e.message == "error!!"
+        then : "ApiException이 발생한다."
+        ApiException e = thrown()
+        e.errorMessage == "error!!"
+        e.errorStatusType == ErrorStatusType.EXTERNEL_API_ERROR
+        e.httpStatus == HttpStatus.BAD_REQUEST
 
     }
 }
