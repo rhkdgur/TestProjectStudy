@@ -1,5 +1,6 @@
 package com.library.client;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,5 +24,10 @@ public class NaverClientConfiguration {
 
         return requestTemplate -> requestTemplate.header("X-Naver-Client-Id",clientId)
                 .header("X-Naver-Client-Secret",clientSecret);
+    }
+
+    @Bean
+    public NaverErrorDecoder naverErrorDecoder(ObjectMapper objectMapper) {
+        return new NaverErrorDecoder(objectMapper);
     }
 }
