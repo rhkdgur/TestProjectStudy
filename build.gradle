@@ -37,6 +37,9 @@ subprojects {
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
 //        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+
         testImplementation 'org.spockframework:spock-core:2.4-M4-groovy-4.0'
         testImplementation 'org.spockframework:spock-spring:2.4-M4-groovy-4.0'
     }

@@ -1,4 +1,4 @@
-package com.library.client;
+package com.library;
 
 /**
  * packageName    : com.library.client
